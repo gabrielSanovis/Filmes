@@ -1,0 +1,6 @@
+pre-commit:
+  commands:
+    check-code:
+      run: yarn check-code
+    update-index:
+      run: git update-index --again
