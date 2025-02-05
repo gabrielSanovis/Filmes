@@ -31,14 +31,14 @@ jobs:
         distribution: 'microsoft'
         java-version: '17'
 
-    - name: Install Android SDK
-      run: |
-        sudo apt update
-        sudo apt install -y wget unzip
-        wget https://dl.google.com/android/repository/commandlinetools-linux-7583922_latest.zip
-        unzip commandlinetools-linux-7583922_latest.zip -d android-sdk
-        echo "y" | android-sdk/cmdline-tools/bin/sdkmanager --sdk_root=./android-sdk --update
-        echo "y" | android-sdk/cmdline-tools/bin/sdkmanager --sdk_root=./android-sdk "platforms;android-35" "build-tools;35.0.0" "ndk;27.1.12297006"
+    # - name: Install Android SDK
+    #   run: |
+    #     sudo apt update
+    #     sudo apt install -y wget unzip
+    #     wget https://dl.google.com/android/repository/commandlinetools-linux-7583922_latest.zip
+    #     unzip commandlinetools-linux-7583922_latest.zip -d android-sdk
+    #     echo "y" | android-sdk/cmdline-tools/bin/sdkmanager --sdk_root=./android-sdk --update
+    #     echo "y" | android-sdk/cmdline-tools/bin/sdkmanager --sdk_root=./android-sdk "platforms;android-35" "build-tools;35.0.0" "ndk;27.1.12297006"
 
     - name: Set execute permission on gradlew
       run: chmod +x ./android/gradlew
