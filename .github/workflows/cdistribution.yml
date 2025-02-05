@@ -56,8 +56,8 @@ jobs:
     - name: Install Firebase CLI
       run: curl -sl https://firebase.tools | bash
 
+    - name: Check Firebase CLI Version
+      run: firebase --version
+
     - name: Upload APK to Firebase App Distribution
-      run: firebase appdistribution:distribute android/app/build/outputs/apk/release/app-release.apk \
-        --app ${{ secrets.FIREBASE_APP_ID }} \
-        --groups "qa-team" \
-        --token ${{ secrets.FIREBASE_AUTH_TOKEN }}
+      run: firebase appdistribution:distribute android/app/build/outputs/apk/release/app-release.apk --app ${{ secrets.FIREBASE_APP_ID }} --groups "qa-team" --token ${{ secrets.FIREBASE_AUTH_TOKEN }}
