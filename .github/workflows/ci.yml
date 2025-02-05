@@ -28,9 +28,11 @@ jobs:
     - name: Run tests with coverage
       run: yarn test --coverage
 
-    - name: Upload coverage report
-      uses: actions/upload-artifact@v4
-      with:
-        name: coverage-report
-        path: coverage/lcov-report
+    - name: Run performance testing script
+      run: ./reassure-tests.sh
+
+    - name: Run Danger.js
+      run: yarn danger ci
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     
