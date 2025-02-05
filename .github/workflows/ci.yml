@@ -29,7 +29,7 @@ jobs:
       run: yarn test --coverage
 
     - name: Run performance testing script
-      run: chmod +x reassure-tests.sh
+      run: chmod +x ./reassure-tests.sh
 
     - name: Run Danger.js
       run: yarn danger ci
