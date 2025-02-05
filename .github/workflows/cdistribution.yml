@@ -48,6 +48,7 @@ jobs:
         cd android
         ./gradlew clean
         ./gradlew assembleRelease
+        cd ..
 
     - name: Clear google-services.json
       run: echo "" > android/app/google-services.json
