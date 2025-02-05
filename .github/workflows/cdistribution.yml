@@ -40,6 +40,9 @@ jobs:
         echo "y" | android-sdk/cmdline-tools/bin/sdkmanager --sdk_root=./android-sdk --update
         echo "y" | android-sdk/cmdline-tools/bin/sdkmanager --sdk_root=./android-sdk "platforms;android-35" "build-tools;35.0.0" "ndk;27.1.12297006"
 
+    - name: Set execute permission on gradlew
+      run: chmod +x ./android/gradlew
+
     - name: Build Android APK
       run: |
         cd android
