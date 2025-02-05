@@ -28,8 +28,11 @@ jobs:
     - name: Run tests with coverage
       run: yarn test --coverage
 
+    - name: Grant execute permission to reassure-tests.sh
+      run: chmod +x reassure-tests.sh
+
     - name: Run performance testing script
-      run: chmod +x ./reassure-tests.sh
+      run: ./reassure-tests.sh
 
     - name: Run Danger.js
       run: yarn danger ci
