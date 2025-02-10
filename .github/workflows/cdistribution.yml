@@ -33,6 +33,11 @@ jobs:
       - name: Set execute permission on gradlew
         run: chmod +x ./android/gradlew
 
+      - name: Install Fastlane dependencies
+        run: |
+          gem install bundler
+          bundle install
+
       - name: Fastlane Build
         run: fastlane android build
 
