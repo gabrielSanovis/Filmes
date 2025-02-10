@@ -30,6 +30,9 @@ jobs:
       - name: Install Dependencies
         run: yarn install --frozen-lockfile
 
+      - name: Set execute permission on gradlew
+        run: chmod +x ./android/gradlew
+
       - name: Fastlane Build
         run: fastlane android build
 
