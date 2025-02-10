@@ -1,6 +1,11 @@
 pre-commit:
-  commands:
-    check-code:
-      run: yarn check-code
-    update-index:
-      run: git update-index --again
+  jobs:
+    - name: check-code
+      group:
+        parallel: true
+        jobs:
+          - name: lint
+            run: yarn lint
+          - name: format
+            run: yarn format
+    - run: git update-index --again

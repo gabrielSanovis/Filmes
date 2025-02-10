@@ -10,54 +10,31 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v4
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
-    - name: Install Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: 'latest'
-        cache: 'yarn'
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'latest'
+          cache: 'yarn'
 
-    - name: Create google-services.json
-      run: echo "${{ secrets.GOOGLE }}" | base64 --decode > android/app/google-services.json
-      
-    - name: Install Dependencies
-      run: yarn install --frozen-lockfile
-    
-    - name: Set up JDK (Java Development Kit)
-      uses: actions/setup-java@v3
-      with:
-        distribution: 'microsoft'
-        java-version: '17'
+      - name: 'Create env file'
+        run: |
+          echo FIREBASE_APP_ID=${{secrets.FIREBASE_APP_ID}} > .env
+          echo FIREBASE_CLI_TOKEN=${{ secrets.FIREBASE_AUTH_TOKEN }} >> .env
 
-    # - name: Install Android SDK
-    #   run: |
-    #     sudo apt update
-    #     sudo apt install -y wget unzip
-    #     wget https://dl.google.com/android/repository/commandlinetools-linux-7583922_latest.zip
-    #     unzip commandlinetools-linux-7583922_latest.zip -d android-sdk
-    #     echo "y" | android-sdk/cmdline-tools/bin/sdkmanager --sdk_root=./android-sdk --update
-    #     echo "y" | android-sdk/cmdline-tools/bin/sdkmanager --sdk_root=./android-sdk "platforms;android-35" "build-tools;35.0.0" "ndk;27.1.12297006"
+      - name: Create google-services.json
+        run: echo "${{ secrets.GOOGLE }}" | base64 --decode > android/app/google-services.json
 
-    - name: Set execute permission on gradlew
-      run: chmod +x ./android/gradlew
+      - name: Install Dependencies
+        run: yarn install --frozen-lockfile
 
-    - name: Build Android APK
-      run: |
-        cd android
-        ./gradlew clean
-        ./gradlew assembleRelease
-        cd ..
+      - name: Fastlane Build
+        run: fastlane android build
 
-    - name: Clear google-services.json
-      run: echo "" > android/app/google-services.json
+      - name: Clear google-services.json
+        run: echo "" > android/app/google-services.json
 
-    - name: Install Firebase CLI
-      run: curl -sl https://firebase.tools | bash
-
-    - name: Check Firebase CLI Version
-      run: firebase --version
-
-    - name: Upload APK to Firebase App Distribution
-      run: firebase appdistribution:distribute android/app/build/outputs/apk/release/app-release.apk --app ${{ secrets.FIREBASE_APP_ID }} --groups "qa-team" --token ${{ secrets.FIREBASE_AUTH_TOKEN }}
+      - name: Remove .env file
+        run: rm -f .env
