@@ -33,16 +33,8 @@ jobs:
       - name: Set execute permission on gradlew
         run: chmod +x ./android/gradlew
 
-      - name: Setup Ruby & Bundler
-        run: |
-          echo 'export GEM_HOME=$HOME/.gem' >> $HOME/.bashrc
-          echo 'export PATH=$HOME/.gem/bin:$PATH' >> $HOME/.bashrc
-          source $HOME/.bashrc
-          gem install bundler --user-install
-          bundle install --path vendor/bundle
-
       - name: Fastlane Build
-        run: bundle exec fastlane android build
+        run: fastlane android build
 
       - name: Clear google-services.json
         run: echo "" > android/app/google-services.json
