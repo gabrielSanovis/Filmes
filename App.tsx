@@ -77,11 +77,11 @@ function App(): React.JSX.Element {
             backgroundColor: isDarkMode ? Colors.black : Colors.white,
           }}
         >
-          <Section title="Testando se o CI vai funcionar">
+          <Section title="Testando se o CI  funcionar">
             Edit <Text style={styles.highlight}>App.tsx</Text> to change this screen and then come
             back to see your edits.
           </Section>
-          <Section title="See Your Changes">
+          <Section title="outra alteração">
             <ReloadInstructions />
           </Section>
           <Section title="Debug">
