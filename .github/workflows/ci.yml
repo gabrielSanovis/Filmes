@@ -5,6 +5,10 @@ on:
     branches:
       - develop
 
+permissions:
+  pull-requests: write
+  contents: read
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -28,9 +32,14 @@ jobs:
     - name: Run tests with coverage
       run: yarn test --coverage
 
-    - name: Upload coverage report
-      uses: actions/upload-artifact@v4
-      with:
-        name: coverage-report
-        path: coverage/lcov-report
+    - name: Grant execute permission to reassure-tests.sh
+      run: chmod +x reassure-tests.sh
+
+    - name: Run performance testing script
+      run: ./reassure-tests.sh
+
+    - name: Run Danger.js
+      run: yarn danger ci
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     

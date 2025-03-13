@@ -1,0 +1,13 @@
+platform :android do
+    # Android Lanes
+    desc 'Build Apk'
+        lane :build do
+            gradle(task: 'clean', project_dir: 'android/')
+            gradle(task: 'assemble', build_type: 'Release', project_dir: 'android/')
+            firebase_app_distribution(
+                firebase_cli_token: ENV["FIREBASE_CLI_TOKEN"],
+                app: ENV["FIREBASE_APP_ID"],
+                groups: "qa-team"
+              )
+        end
+end
