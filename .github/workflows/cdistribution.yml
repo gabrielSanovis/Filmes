@@ -30,6 +30,22 @@ jobs:
       - name: Install Dependencies
         run: yarn install --frozen-lockfile
 
+      - name: Set execute permission on gradlew
+        run: chmod +x ./android/gradlew
+
+      - name: Install Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.3.7
+          bundler-cache: true
+
+      - name: Install Fastlane
+        run: gem install fastlane
+
+      - name: Add Fastlane Plugins
+        run: |
+          fastlane add_plugin firebase_app_distribution
+
       - name: Fastlane Build
         run: fastlane android build
 
