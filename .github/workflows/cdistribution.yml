@@ -19,6 +19,11 @@ jobs:
           node-version: 'latest'
           cache: 'yarn'
 
+      - name: 'Create env file'
+        run: |
+          echo FIREBASE_APP_ID=${{secrets.FIREBASE_APP_ID}} > .env
+          echo FIREBASE_CLI_TOKEN=${{ secrets.FIREBASE_AUTH_TOKEN }} >> .env
+
       - name: Create google-services.json
         run: echo "${{ secrets.GOOGLE }}" | base64 --decode > android/app/google-services.json
 
@@ -28,21 +33,24 @@ jobs:
       - name: Set execute permission on gradlew
         run: chmod +x ./android/gradlew
 
-      - name: Build Android APK
+      - name: Install Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.3.7
+          bundler-cache: true
+
+      - name: Install Fastlane
+        run: gem install fastlane
+
+      - name: Add Fastlane Plugins
         run: |
-          cd android
-          ./gradlew clean
-          ./gradlew assembleRelease
-          cd ..
+          fastlane add_plugin firebase_app_distribution
+
+      - name: Fastlane Build
+        run: fastlane android build
 
       - name: Clear google-services.json
         run: echo "" > android/app/google-services.json
 
-      - name: Install Firebase CLI
-        run: curl -sl https://firebase.tools | bash
-
-      - name: Check Firebase CLI Version
-        run: firebase --version
-
-      - name: Upload APK to Firebase App Distribution
-        run: firebase appdistribution:distribute android/app/build/outputs/apk/release/app-release.apk --app ${{ secrets.FIREBASE_APP_ID }} --groups "qa-team" --token ${{ secrets.FIREBASE_AUTH_TOKEN }}
+      - name: Remove .env file
+        run: rm -f .env

@@ -14,32 +14,31 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v4
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
-    - name: Install Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: 'latest'
-        cache: 'yarn'
-      
-    - name: Install Dependencies
-      run: yarn install --frozen-lockfile
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'latest'
+          cache: 'yarn'
 
-    - name: Run lint
-      run: yarn lint
+      - name: Install Dependencies
+        run: yarn install --frozen-lockfile
 
-    - name: Run tests with coverage
-      run: yarn test --coverage
+      - name: Run lint
+        run: yarn lint
 
-    - name: Grant execute permission to reassure-tests.sh
-      run: chmod +x reassure-tests.sh
+      - name: Run tests with coverage
+        run: yarn test --coverage
 
-    - name: Run performance testing script
-      run: ./reassure-tests.sh
+      - name: Grant execute permission to reassure-tests.sh
+        run: chmod +x reassure-tests.sh
 
-    - name: Run Danger.js
-      run: yarn danger ci
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    
+      - name: Run performance testing script
+        run: ./reassure-tests.sh
+
+      - name: Run Danger.js
+        run: yarn danger ci
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
